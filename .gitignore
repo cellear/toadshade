@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.venv/
+venv/
+.DS_Store
+
+# Generated previews. Commit them instead if reviewers get the repo as a zip
+# rather than a checkout — see SPEC.md section 5.
+# *.html

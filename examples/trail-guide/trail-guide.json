@@ -1,0 +1,106 @@
+{
+  "toadshade": "0.1",
+  "slug": "trail-guide",
+  "title": "Trail Guide",
+  "alias": "/visit/trail-guide",
+  "meta": {
+    "source": "example:hand-written",
+    "generator": "hand-written for the Toadshade example",
+    "note": "Fern Hollow Preserve is invented, and so is everything on this page. The bundle exists to exercise the format: nested slots, image and non-image assets, props of several shapes."
+  },
+  "components": [
+    {
+      "id": "s1",
+      "type": "hero",
+      "label": "Banner",
+      "props": {
+        "heading": "Trail Guide",
+        "body": "Eleven miles of marked trail through the creek bottom and up onto the ridge. Open dawn to dusk, year round, no entry fee.",
+        "featured_image": {
+          "$asset": "assets/trailhead.jpg",
+          "alt": "A boardwalk junction in winter woods, with a carved wooden signpost pointing toward the campground, visitor center, and trail"
+        },
+        "cta_label": "Download the trail map",
+        "cta_url": "/visit/maps"
+      }
+    },
+    {
+      "id": "s2",
+      "type": "section",
+      "label": "Pick a trail",
+      "props": {
+        "heading": "Pick a trail",
+        "body": "All three loops start from the same parking area and are blazed in different colors. Trail conditions change fast after rain — the creek crossing on the Blue Loop is genuinely impassable in spring.\n\nIf you have never been here before, start with the Boardwalk Loop.",
+        "background": "light"
+      },
+      "slots": {
+        "content": [
+          {
+            "id": "s2a",
+            "type": "card-grid",
+            "props": {
+              "columns": 3
+            },
+            "slots": {
+              "cards": [
+                {
+                  "id": "s2a1",
+                  "type": "card",
+                  "props": {
+                    "title": "Boardwalk Loop",
+                    "body": "Half a mile, flat, fully accessible. Elevated boardwalk over the wetland, with benches at both ends.",
+                    "image": {
+                      "$asset": "assets/boardwalk.jpg",
+                      "alt": "A boardwalk curving away through green swamp forest, with a bench beside it"
+                    },
+                    "url": "/visit/trail-guide/boardwalk-loop"
+                  }
+                },
+                {
+                  "id": "s2a2",
+                  "type": "card",
+                  "props": {
+                    "title": "Blue Loop",
+                    "body": "Three and a half miles along the creek. One unbridged crossing — check the water level before you start.",
+                    "url": "/visit/trail-guide/blue-loop"
+                  }
+                },
+                {
+                  "id": "s2a3",
+                  "type": "card",
+                  "props": {
+                    "title": "Ridge Trail",
+                    "body": "Seven miles out and back, with about nine hundred feet of climbing. The overlook is worth it in October.",
+                    "url": "/visit/trail-guide/ridge-trail"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "s3",
+      "type": "callout",
+      "props": {
+        "heading": "Before you go",
+        "body": "There is no cell service past the first quarter mile. Tell somebody your route, carry water, and turn around with enough daylight to get back.",
+        "phone": "(555) 0100",
+        "email": "trails@example.org",
+        "background": "dark"
+      }
+    },
+    {
+      "id": "s4",
+      "type": "download",
+      "props": {
+        "title": "Printable trail checklist",
+        "file": {
+          "$asset": "assets/trail-checklist.txt",
+          "title": "What to bring (plain text)"
+        }
+      }
+    }
+  ]
+}

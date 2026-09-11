@@ -1,0 +1,10 @@
+WHAT TO BRING (example asset)
+
+[ ] Water, more than you think
+[ ] Map, on paper
+[ ] Layers
+[ ] Headlamp
+[ ] Somebody who knows your route
+
+This is a placeholder asset in the Toadshade example bundle. It exists to show
+a non-image $asset reference rendering as a download link in the preview.

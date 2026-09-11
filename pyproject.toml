@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "toadshade"
+version = "0.1.0"
+description = "The page bundle format: one page, one directory — prose in Markdown, structure in JSON, a double-clickable HTML proof sheet."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "Luke McCormick" }]
+keywords = ["cms", "content", "migration", "static", "drupal", "data-liberation"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Text Processing :: Markup",
+]
+
+# No required dependencies, on purpose: `toadshade render` and the structural
+# half of `toadshade validate` are standard library only, so the tool runs from
+# a bare checkout on any machine that has Python.
+dependencies = []
+
+[project.optional-dependencies]
+schema = ["jsonschema>=4.0"]
+dev = ["jsonschema>=4.0", "pytest>=7.0"]
+
+[project.urls]
+Homepage = "https://github.com/cellear/toadshade"
+Specification = "https://github.com/cellear/toadshade/blob/main/SPEC.md"
+"Reference importer" = "https://github.com/cellear/Drupal-Canvas-Page-Migrate"
+
+[project.scripts]
+toadshade = "toadshade.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/toadshade"]
+
+# Ship the schema inside the wheel so `toadshade validate` finds it when
+# installed, not just from a checkout.
+[tool.hatch.build.targets.wheel.force-include]
+"schema/bundle.schema.json" = "toadshade/schema/bundle.schema.json"
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "schema", "examples", "docs", "tests", "SPEC.md", "README.md", "LICENSE"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cellear/toadshade/schema/bundle.schema.json",
+  "title": "Toadshade bundle",
+  "description": "The machine layer of a Toadshade page bundle: {slug}.json",
+  "type": "object",
+  "required": ["toadshade", "slug", "title", "alias", "components"],
+  "additionalProperties": false,
+  "properties": {
+    "toadshade": {
+      "description": "Format version.",
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$"
+    },
+    "slug": {
+      "description": "Must equal the bundle directory name and the filename stem.",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "title": {
+      "description": "The page's human title.",
+      "type": "string",
+      "minLength": 1
+    },
+    "alias": {
+      "description": "Root-relative URL path. The page's real identity.",
+      "type": "string",
+      "pattern": "^/([^\\s/]+(/[^\\s/]+)*)?$"
+    },
+    "meta": {
+      "description": "Free-form provenance. Never interpreted by importers.",
+      "type": "object"
+    },
+    "components": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/component" }
+    }
+  },
+  "$defs": {
+    "component": {
+      "type": "object",
+      "required": ["id", "type"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "description": "Unique within the bundle. Join key to the Markdown layer.",
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "description": "The component's machine name in the destination system.",
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "description": "Editor-facing name. Never rendered publicly.",
+          "type": "string"
+        },
+        "props": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/propValue" }
+        },
+        "slots": {
+          "description": "Slot name to ordered list of child components.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/component" }
+          }
+        }
+      }
+    },
+    "propValue": {
+      "anyOf": [
+        { "type": ["string", "number", "boolean", "null"] },
+        { "$ref": "#/$defs/asset" },
+        { "type": "array", "items": { "$ref": "#/$defs/propValue" } },
+        { "type": "object" }
+      ]
+    },
+    "asset": {
+      "description": "A reference to a file inside the bundle's assets/ directory.",
+      "type": "object",
+      "required": ["$asset"],
+      "properties": {
+        "$asset": {
+          "type": "string",
+          "pattern": "^assets/[^\\\\]+$",
+          "not": { "pattern": "\\.\\." }
+        },
+        "alt": { "type": "string" },
+        "title": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}
