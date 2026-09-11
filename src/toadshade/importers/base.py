@@ -142,6 +142,24 @@ class Exporter:
 # --------------------------------------------------------------------------
 
 
+def format_value(value) -> list:
+    """Render one prop value as Markdown lines.
+
+    Lists become real bullets and booleans become yes/no, because the human
+    layer is read by people — a Python repr like ``['a', 'b']`` or ``False``
+    in a reviewer-facing file is a bug, not a formatting preference.
+    """
+    if isinstance(value, bool):
+        return [ "yes" if value else "no" ]
+    if isinstance(value, list) and all(
+        isinstance(v, (str, int, float, bool)) for v in value
+    ):
+        return [f"- {v}" for v in value]
+    if isinstance(value, (list, dict)):
+        return [f"`{json.dumps(value, ensure_ascii=False)}`"]
+    return [str(value)]
+
+
 def markdown_for(draft: BundleDraft) -> str:
     """A serviceable default human layer, generated from the components.
 
@@ -173,10 +191,17 @@ def markdown_for(draft: BundleDraft) -> str:
                     )
                     lines.append("")
                 else:
-                    lines.extend([f"**{name}:** {value}", ""])
+                    rendered = format_value(value)
+                    if len(rendered) == 1 and not rendered[0].startswith("- "):
+                        lines.extend([f"**{name}:** {rendered[0]}", ""])
+                    else:
+                        lines.extend([f"**{name}:**", ""] + rendered + [""])
             for children in (component.get("slots") or {}).values():
                 emit(children, number, depth + 1)
-            lines.extend(["---", ""])
+            # Only top-level components get a rule; nesting is shown by the
+            # heading level, and a rule per child reads as a stutter.
+            if depth == 0:
+                lines.extend(["---", ""])
 
     emit(draft.components)
     return "\n".join(lines)

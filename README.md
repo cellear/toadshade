@@ -85,7 +85,7 @@ open examples/trail-guide/trail-guide.html
       "props": {
         "heading": "Trail Guide",
         "body": "Eleven miles of marked trail, dawn to dusk.",
-        "featured_image": { "$asset": "assets/trailhead.jpg", "alt": "Boardwalk junction with a carved wooden signpost" }
+        "featured_image": { "$asset": "assets/trailhead.jpg", "alt": "Trailhead signpost" }
       }
     },
     {
@@ -128,6 +128,21 @@ Dogsheep's `X-to-sqlite` family, with the source-specific fetching kept
 separate from the bundle writing so the hard part stays reusable. The contract
 is in [`src/toadshade/importers/base.py`](src/toadshade/importers/base.py) and
 the rationale is in [docs/importers.md](docs/importers.md).
+
+The first one is built:
+
+```bash
+pip install "toadshade[apple-notes]"
+apple-notes-to-toadshade content/          # or: apple-notes-to-sqlite --dump | ... -
+```
+
+`apple-notes-to-toadshade` is a port of Simon Willison's
+[`apple-notes-to-sqlite`](https://datasette.io/tools/apple-notes-to-sqlite).
+It imports his `extract_notes()` — the AppleScript driver, the streaming
+reassembly, the mac_roman decoding — completely unchanged, and replaces the
+one line that wrote to SQLite. Your notes come out as a folder tree of pages,
+each with its lists, checklists and inline images intact, each with an HTML
+proof sheet you can double-click. Nothing is uploaded.
 
 **Out of Toadshade** — destination-side importers. The reference
 implementation is

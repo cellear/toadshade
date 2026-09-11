@@ -65,12 +65,25 @@ def render_asset(value: dict) -> str:
     return f'<p class="file"><a href="{src}">{label}</a></p>'
 
 
-def render_prop(name: str, value) -> str:
+def is_simple_list(value) -> bool:
+    """A list of scalars — the shape a reviewer expects to see as a list."""
+    return isinstance(value, list) and value and all(
+        isinstance(v, (str, int, float, bool)) for v in value
+    )
+
+
+def render_prop(name: str, value, component_type: str = "") -> str:
     """One row in a component's property list."""
     if is_asset(value):
         rendered = render_asset(value)
     elif isinstance(value, bool):
         rendered = "yes" if value else "no"
+    elif is_simple_list(value):
+        # Show a list as a list. A reviewer checking copy should not have to
+        # read JSON to find out what the bullet points say.
+        box = '<span class="box"></span>' if component_type == "checklist" else ""
+        items = "".join(f"<li>{box}{esc(v)}</li>" for v in value)
+        rendered = f'<ul class="items">{items}</ul>'
     elif isinstance(value, (list, dict)):
         rendered = f"<code>{esc(json.dumps(value, ensure_ascii=False))}</code>"
     else:
@@ -124,7 +137,8 @@ def render_component(component: dict, number: str, depth: int = 0) -> str:
         out.append(render_asset(value))
 
     if props:
-        rows = "".join(render_prop(k, v) for k, v in props.items())
+        ctype = component.get("type", "")
+        rows = "".join(render_prop(k, v, ctype) for k, v in props.items())
         out.append(f"<dl>{rows}</dl>")
 
     # Slots: named lists of child components. Recurse.
@@ -186,6 +200,10 @@ dl { margin: .75rem 0; display: grid; grid-template-columns: minmax(6rem, 10rem)
 dt { font-family: ui-monospace, Menlo, monospace; font-size: .78rem; color: #6b7a69; }
 dd { margin: 0; }
 dd code { font-size: .78rem; word-break: break-all; }
+ul.items { margin: 0; padding-left: 1.1rem; }
+ul.items li { margin: 0 0 .2rem; }
+.box { display: inline-block; width: .72em; height: .72em; margin-right: .45em;
+  border: 1.5px solid #8a9788; border-radius: 2px; vertical-align: baseline; }
 
 .slot { margin: .75rem 0 .75rem 1.25rem; border-left: 2px dotted #c6d0c1; padding-left: 1.25rem; }
 .slot-name { margin: 0 0 .5rem; font-family: ui-monospace, Menlo, monospace;

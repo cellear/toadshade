@@ -186,3 +186,19 @@ def test_schema_check_skips_when_jsonschema_absent(monkeypatch, tmp_path):
     report = validate_bundle(_bundle(tmp_path, BASE))
     assert report.ok
     assert any("pip install" in s for s in report.skipped)
+
+
+def test_render_shows_scalar_lists_as_lists_not_json(tmp_path):
+    data = dict(BASE, components=[
+        {"id": "a", "type": "note-list", "props": {"items": ["one", "two"]}},
+    ])
+    html = render_html(data)
+    assert "<li>one</li>" in html and "<li>two</li>" in html
+    assert '["one", "two"]' not in html, "a reviewer should not have to read JSON"
+
+
+def test_render_gives_checklists_checkboxes(tmp_path):
+    data = dict(BASE, components=[
+        {"id": "a", "type": "checklist", "props": {"items": ["water"]}},
+    ])
+    assert 'class="box"' in render_html(data)
