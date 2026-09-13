@@ -155,6 +155,13 @@ backdrop-to-toadshade content/ --db mysql://user@host/db \
     --config-dir files/config_<hash>/active --files-dir files
 ```
 
+`wordpress-to-toadshade` reads a WordPress export file (Tools → Export) with
+nothing but the standard library, turning Gutenberg blocks into components:
+
+```bash
+wordpress-to-toadshade content/ export.xml --uploads-dir wp-content/uploads --sections post=blog
+```
+
 **Out of Toadshade** — destination-side importers. The reference
 implementation is
 [Drupal-Canvas-Page-Migrate](https://github.com/cellear/Drupal-Canvas-Page-Migrate):

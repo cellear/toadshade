@@ -30,6 +30,13 @@ generalized into a format with no Drupal in it.
   fetch layer yields the Drupal exporter's record shape, so the whole Drupal
   bundle layer is reused; `drupal.py` gained injectable descriptors,
   database and builder classes (no behaviour change).
+- **`wordpress-to-toadshade`** — a WordPress WXR export (Tools → Export) into
+  bundles, streamed with the standard library. Gutenberg blocks become
+  `wp-*` components with their attributes as props, Markdown and HTML bodies,
+  and inner blocks in a slot; classic content becomes one text component.
+  Featured images and image blocks resolve through attachments and
+  `--uploads-dir`. Filed by permalink with the shared
+  `base.AliasPlacement` (moved out of the Drupal exporter).
 - Worked example bundle with nested slots, image and non-image assets.
 
 ### Fixed along the way

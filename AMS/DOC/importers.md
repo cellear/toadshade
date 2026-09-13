@@ -409,4 +409,101 @@ built by `tests/fixtures/make_backdrop1.py`.
   Contrib Paragraphs for Backdrop is not embedded.
 - No comments.
 
+
+---
+
+## The fourth one: `wordpress-to-toadshade`
+
+Shipped at `src/toadshade/importers/wordpress.py`. It reads the file that
+WordPress's **Tools → Export** writes (WXR 1.0–1.2) and writes one bundle
+per post, page, or custom post type item. No database, no running site.
+
+### The split
+
+- **`WxrFile`** streams the XML with `xml.etree.ElementTree.iterparse` and
+  yields one plain dict per `<item>`: every `wp:` field, `content`,
+  `excerpt`, `creator`, `guid`, `categories` (domain, nicename, name),
+  `postmeta` (PHP-serialized values decoded) and a `comment_count`.
+  Channel data (base URLs, authors, categories, tags, terms) fills
+  `WxrFile.site`. Namespaces are matched by rule, so `http` and `https`
+  variants and WXR 1.0–1.2 all read the same. Control characters that are
+  invalid in XML are dropped from the stream first, because real exports
+  contain them.
+- **`parse_blocks()`** is WordPress's block comment grammar in plain Python:
+  `<!-- wp:name {json} -->…<!-- /wp:name -->`, self-closing `/-->`,
+  nesting, namespaces, stray closers ignored, unclosed blocks closed at the
+  end, HTML outside blocks returned as a block named `None`.
+- **`WordPressToToadshade`** makes one extra streaming pass (`index()`) for
+  what pages refer to: attachments, reusable blocks, and every item's
+  permalink and parent. Memory stays proportional to that index, not to
+  post content.
+
+### What an item becomes
+
+| In WordPress | In the bundle |
+|---|---|
+| the item's own fields | the first component, typed by post type (`post`, `page`, `trail`): `title`, `excerpt`, terms, `featured_image` |
+| a block | a component typed `wp-{name}` (`core/` dropped, other namespaces kept: `wp-jetpack/markdown`), labelled with the block's name |
+| block attributes (JSON) | props, unchanged |
+| block inner HTML | `body` (Markdown, via the Drupal exporter's `html_to_markdown`) plus `body_html`, when it has any text |
+| inner blocks | a slot named `inner_blocks` |
+| `core/block` (a reusable block) | its `wp_block` content parsed into `inner_blocks` |
+| `core/image` | an `image` asset, resolved through the attachment (`id` or `wp-image-N`), with alt from the `<img>` or the attachment and the figcaption as `title`; unresolvable becomes `image_url` (+ `alt`, `caption`) |
+| classic (non-block) content | one `text` component; `body_html` gets a small `wpautop()` so paragraphs survive |
+| `<img>` inside any HTML | copied from uploads into `assets/`, as an `images` slot (the Drupal exporter's convention) |
+| `_thumbnail_id` | `featured_image` asset, or `featured_image_url` |
+| categories, tags | `categories` / `tags` props in SPEC's `Label → /url` shape, with `/category/{parents}/{slug}` and `/tag/{slug}` |
+| custom taxonomies | a prop named after the taxonomy, labels only |
+| author, dates, id, guid, status, link, parent, menu order, comment status, custom postmeta | `meta`; `_`-prefixed postmeta is WordPress-internal and skipped |
+
+Skipped: `attachment` (used only for lookups), `revision`, `nav_menu_item`,
+`wp_block`, `wp_template`, `wp_template_part`, `wp_global_styles`,
+`wp_navigation`, `custom_css`, `customize_changeset`, `oembed_cache`,
+`user_request`, the font types, and items with status `auto-draft` or
+`trash`. Drafts, pending, future and private items are exported, with their
+status in `meta`.
+
+### Where bundles land
+
+The alias is the path of the item's `<link>` (its permalink), relative to the
+blog's base path. Placement uses `base.AliasPlacement`, the rules the Drupal
+exporter uses: parents move one level down, collisions get `-2`, and
+`--sections post=blog` files one-level permalinks under a folder. Date-based
+permalinks (`/2026/03/14/slug`) are a real hierarchy and are kept.
+
+A draft, or a site with plain permalinks, has `?p=22` for a link. Then the
+path is rebuilt from `post_name` and the `post_parent` chain
+(`/about/team`), or, if any name in the chain is empty, `/{post_type}/{id}`.
+
+### Running it
+
+```bash
+wordpress-to-toadshade content/ export.xml \
+    --uploads-dir ~/Sites/mysite/wp-content/uploads \
+    --sections post=blog  --post-types post,page  --stop-after 20  --no-render
+```
+
+`--uploads-dir` maps any `…/wp-content/uploads/…` URL to a local file and
+falls back from a resized copy (`-1024x768`, `-scaled`) to the original. The
+tests run against `tests/fixtures/wordpress.wxr.xml` and
+`tests/fixtures/wordpress-uploads/`, built by
+`tests/fixtures/make_wordpress_wxr.py`.
+
+### What it does not do (yet)
+
+- **The front page is not detected.** WXR does not include the
+  `show_on_front` / `page_on_front` options, so a static front page is filed
+  under its own permalink.
+- **Term URLs assume the default bases** (`/category/`, `/tag/`). WXR does
+  not record a custom category or tag base.
+- **Block attributes are shown in the preview's details list** (`id`,
+  `sizeSlug`, `level`…). They are faithful but noisy for a reviewer.
+- Classic-editor galleries (`[gallery ids="…"]`) and other shortcodes stay as
+  text. `core/cover` and `core/media-text` images are only picked up through
+  their inner `<img>`.
+- A list block's items are separate components, so the preview shows one
+  bullet list per item.
+- Phase 2: reading the WordPress database directly. Also not read: comments
+  (counted in `meta`), menus, widgets, site options.
+
 Last updated: 2026-09-13 by claude
