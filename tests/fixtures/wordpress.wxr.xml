@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- generator="WordPress/6.6" created="2026-03-20 12:00" -->
+<rss version="2.0"
+	xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:wp="http://wordpress.org/export/1.2/"
+>
+<channel>
+	<title>Toadshade Woods</title>
+	<link>https://woods.example.com</link>
+	<description>Visitor pages for an invented forest</description>
+	<language>en-US</language>
+	<wp:wxr_version>1.2</wp:wxr_version>
+	<wp:base_site_url>https://woods.example.com</wp:base_site_url>
+	<wp:base_blog_url>https://woods.example.com</wp:base_blog_url>
+	<wp:author><wp:author_id>1</wp:author_id><wp:author_login><![CDATA[site-admin]]></wp:author_login><wp:author_email><![CDATA[admin@example.com]]></wp:author_email><wp:author_display_name><![CDATA[Site Admin]]></wp:author_display_name></wp:author>
+	<wp:author><wp:author_id>2</wp:author_id><wp:author_login><![CDATA[ranger-jo]]></wp:author_login><wp:author_email><![CDATA[jo@example.org]]></wp:author_email><wp:author_display_name><![CDATA[Ranger Jo]]></wp:author_display_name></wp:author>
+	<wp:category><wp:term_id>1</wp:term_id><wp:category_nicename><![CDATA[news]]></wp:category_nicename><wp:category_parent><![CDATA[]]></wp:category_parent><wp:cat_name><![CDATA[News]]></wp:cat_name></wp:category>
+	<wp:category><wp:term_id>2</wp:term_id><wp:category_nicename><![CDATA[field-notes]]></wp:category_nicename><wp:category_parent><![CDATA[news]]></wp:category_parent><wp:cat_name><![CDATA[Field Notes]]></wp:cat_name></wp:category>
+	<wp:tag><wp:term_id>3</wp:term_id><wp:tag_slug><![CDATA[ferns]]></wp:tag_slug><wp:tag_name><![CDATA[Ferns]]></wp:tag_name></wp:tag>
+	<wp:tag><wp:term_id>4</wp:term_id><wp:tag_slug><![CDATA[trilliums]]></wp:tag_slug><wp:tag_name><![CDATA[Trilliums]]></wp:tag_name></wp:tag>
+	<wp:term><wp:term_id>5</wp:term_id><wp:term_taxonomy><![CDATA[trail]]></wp:term_taxonomy><wp:term_slug><![CDATA[creek-loop]]></wp:term_slug><wp:term_parent><![CDATA[]]></wp:term_parent><wp:term_name><![CDATA[Creek Loop]]></wp:term_name></wp:term>
+	<generator>https://wordpress.org/?v=6.6</generator>
+	<item>
+		<title>trailhead</title>
+		<link>https://woods.example.com/about/team/trailhead/</link>
+		<pubDate>Sat, 14 Mar 2026 09:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[ranger-jo]]></dc:creator>
+		<guid isPermaLink="false">https://woods.example.com/?p=10</guid>
+		<description></description>
+		<content:encoded><![CDATA[]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>10</wp:post_id>
+		<wp:post_date><![CDATA[2026-03-14 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2026-03-14 09:00:00]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[open]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[trailhead]]></wp:post_name>
+		<wp:status><![CDATA[inherit]]></wp:status>
+		<wp:post_parent>3</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[attachment]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+		<wp:attachment_url><![CDATA[https://woods.example.com/wp-content/uploads/2026/03/trailhead.png]]></wp:attachment_url>
+		<wp:postmeta>
+			<wp:meta_key><![CDATA[_wp_attached_file]]></wp:meta_key>
+			<wp:meta_value><![CDATA[2026/03/trailhead.png]]></wp:meta_value>
+		</wp:postmeta>
+		<wp:postmeta>
+			<wp:meta_key><![CDATA[_wp_attachment_image_alt]]></wp:meta_key>
+			<wp:meta_value><![CDATA[Trailhead sign]]></wp:meta_value>
+		</wp:postmeta>
+		<wp:postmeta>
+			<wp:meta_key><![CDATA[_wp_attachment_metadata]]></wp:meta_key>
+			<wp:meta_value><![CDATA[a:2:{s:5:"width";i:8;s:6:"height";i:8;}]]></wp:meta_value>
+		</wp:postmeta>
+	</item>
+	<item>
+		<title>missing</title>
+		<link>https://woods.example.com/missing/</link>
+		<pubDate>Sat, 14 Mar 2026 09:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[ranger-jo]]></dc:creator>
+		<guid isPermaLink="false">https://woods.example.com/?p=11</guid>
+		<description></description>
+		<content:encoded><![CDATA[]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>11</wp:post_id>
+		<wp:post_date><![CDATA[2026-03-14 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2026-03-14 09:00:00]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[open]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[missing]]></wp:post_name>
+		<wp:status><![CDATA[inherit]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[attachment]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+		<wp:attachment_url><![CDATA[https://woods.example.com/wp-content/uploads/2026/03/missing.png]]></wp:attachment_url>
+		<wp:postmeta>
+			<wp:meta_key><![CDATA[_wp_attached_file]]></wp:meta_key>
+			<wp:meta_value><![CDATA[2026/03/missing.png]]></wp:meta_value>
+		</wp:postmeta>
+	</item>
+	<item>
+		<title>About</title>
+		<link>https://woods.example.com/about/</link>
+		<pubDate>Sat, 14 Mar 2026 09:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[ranger-jo]]></dc:creator>
+		<guid isPermaLink="false">https://woods.example.com/?p=2</guid>
+		<description></description>
+		<content:encoded><![CDATA[<!-- wp:heading -->
+<h2 class="wp-block-heading">Hours</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Dawn to dusk, every day.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>2</wp:post_id>
+		<wp:post_date><![CDATA[2026-03-14 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2026-03-14 09:00:00]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[open]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[about]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>1</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+	</item>
+	<item>
+		<title>Team</title>
+		<link>https://woods.example.com/about/team/</link>
+		<pubDate>Sat, 14 Mar 2026 09:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[ranger-jo]]></dc:creator>
+		<guid isPermaLink="false">https://woods.example.com/?p=3</guid>
+		<description></description>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>Our rangers keep the <a href="/about/">woods</a> open.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":10,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://woods.example.com/wp-content/uploads/2026/03/trailhead-1024x768.png" alt="" class="wp-image-10"/><figcaption class="wp-element-caption">North trailhead</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column -->
+<div class="wp-block-column"><!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Mornings</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Ranger Jo opens the <em>north</em> gate.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"33%"} -->
+<div class="wp-block-column" style="flex-basis:33%"><!-- wp:image {"id":11} -->
+<figure class="wp-block-image"><img src="https://woods.example.com/wp-content/uploads/2026/03/missing.png" alt="Gone" class="wp-image-11"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:latest-posts {"postsToShow":3,"displayPostDate":true} /-->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>3</wp:post_id>
+		<wp:post_date><![CDATA[2026-03-14 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2026-03-14 09:00:00]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[open]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[team]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>2</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+	</item>
+	<item>
+		<title>Privacy Policy</title>
+		<link>https://woods.example.com/privacy-policy/</link>
+		<pubDate>Sat, 14 Mar 2026 09:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[ranger-jo]]></dc:creator>
+		<guid isPermaLink="false">https://woods.example.com/?p=4</guid>
+		<description></description>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>We collect nothing.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>4</wp:post_id>
+		<wp:post_date><![CDATA[2026-03-14 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2026-03-14 09:00:00]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[open]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[privacy-policy]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[page]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+	</item>
+	<item>
+		<title>Spring Bloom Report</title>
+		<link>https://woods.example.com/spring-bloom-report/</link>
+		<pubDate>Sat, 14 Mar 2026 09:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[ranger-jo]]></dc:creator>
+		<guid isPermaLink="false">https://woods.example.com/?p=20</guid>
+		<description></description>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>See <a href="https://woods.example.com/visit/map/">the trail map</a> for <strong>closures</strong>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Trilliums</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Mayapples</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><!-- wp:paragraph -->
+<p>The best week of the year.</p>
+<!-- /wp:paragraph --><cite>Ranger Jo</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:block {"ref":40} /-->
+
+<!-- wp:jetpack/markdown {"source":"**Bring water** \u002d\u002d always."} -->
+<div class="wp-block-jetpack-markdown"><p><strong>Bring water</strong> -- always.</p></div>
+<!-- /wp:jetpack/markdown -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[What is flowering this week.]]></excerpt:encoded>
+		<wp:post_id>20</wp:post_id>
+		<wp:post_date><![CDATA[2026-03-14 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2026-03-14 09:00:00]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[open]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[spring-bloom-report]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[post]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+		<category domain="category" nicename="news"><![CDATA[News]]></category>
+		<category domain="category" nicename="field-notes"><![CDATA[Field Notes]]></category>
+		<category domain="post_tag" nicename="ferns"><![CDATA[Ferns]]></category>
+		<category domain="post_tag" nicename="trilliums"><![CDATA[Trilliums]]></category>
+		<category domain="trail" nicename="creek-loop"><![CDATA[Creek Loop]]></category>
+		<wp:postmeta>
+			<wp:meta_key><![CDATA[_thumbnail_id]]></wp:meta_key>
+			<wp:meta_value><![CDATA[12]]></wp:meta_value>
+		</wp:postmeta>
+		<wp:postmeta>
+			<wp:meta_key><![CDATA[_edit_last]]></wp:meta_key>
+			<wp:meta_value><![CDATA[1]]></wp:meta_value>
+		</wp:postmeta>
+		<wp:postmeta>
+			<wp:meta_key><![CDATA[subtitle]]></wp:meta_key>
+			<wp:meta_value><![CDATA[Week of March 14]]></wp:meta_value>
+		</wp:postmeta>
+		<wp:postmeta>
+			<wp:meta_key><![CDATA[ratings]]></wp:meta_key>
+			<wp:meta_value><![CDATA[a:2:{i:0;i:4;i:1;i:5;}]]></wp:meta_value>
+		</wp:postmeta>
+		<wp:comment>
+			<wp:comment_id>1</wp:comment_id>
+			<wp:comment_author><![CDATA[A Visitor]]></wp:comment_author>
+			<wp:comment_author_email><![CDATA[visitor@example.org]]></wp:comment_author_email>
+			<wp:comment_content><![CDATA[Lovely trilliums!]]></wp:comment_content>
+			<wp:commentmeta>
+				<wp:meta_key><![CDATA[akismet_result]]></wp:meta_key>
+				<wp:meta_value><![CDATA[false]]></wp:meta_value>
+			</wp:commentmeta>
+		</wp:comment>
+	</item>
+	<item>
+		<title>creek</title>
+		<link>https://woods.example.com/spring-bloom-report/creek/</link>
+		<pubDate>Sat, 14 Mar 2026 09:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[ranger-jo]]></dc:creator>
+		<guid isPermaLink="false">https://woods.example.com/?p=12</guid>
+		<description></description>
+		<content:encoded><![CDATA[]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>12</wp:post_id>
+		<wp:post_date><![CDATA[2026-03-14 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2026-03-14 09:00:00]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[open]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[creek]]></wp:post_name>
+		<wp:status><![CDATA[inherit]]></wp:status>
+		<wp:post_parent>20</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[attachment]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+		<wp:attachment_url><![CDATA[https://woods.example.com/wp-content/uploads/2026/03/creek.png]]></wp:attachment_url>
+		<wp:postmeta>
+			<wp:meta_key><![CDATA[_wp_attached_file]]></wp:meta_key>
+			<wp:meta_value><![CDATA[2026/03/creek.png]]></wp:meta_value>
+		</wp:postmeta>
+		<wp:postmeta>
+			<wp:meta_key><![CDATA[_wp_attachment_image_alt]]></wp:meta_key>
+			<wp:meta_value><![CDATA[Creek crossing at dawn]]></wp:meta_value>
+		</wp:postmeta>
+	</item>
+	<item>
+		<title>Fern Walk</title>
+		<link>https://woods.example.com/fern-walk/</link>
+		<pubDate>Sat, 14 Mar 2026 09:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[site-admin]]></dc:creator>
+		<guid isPermaLink="false">https://woods.example.com/?p=21</guid>
+		<description></description>
+		<content:encoded><![CDATA[First paragraph about <em>ferns</em>.
+
+Second paragraph
+with a line break.
+
+<img class="alignnone size-full wp-image-12" src="https://woods.example.com/wp-content/uploads/2026/03/creek.png" alt="Creek crossing" width="8" height="8" />]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>21</wp:post_id>
+		<wp:post_date><![CDATA[2026-03-14 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2026-03-14 09:00:00]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[open]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[fern-walk]]></wp:post_name>
+		<wp:status><![CDATA[private]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[post]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+		<category domain="category" nicename="news"><![CDATA[News]]></category>
+	</item>
+	<item>
+		<title>Draft: Trail Closures</title>
+		<link>https://woods.example.com/?p=22</link>
+		<pubDate>Sat, 14 Mar 2026 09:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[ranger-jo]]></dc:creator>
+		<guid isPermaLink="false">https://woods.example.com/?p=22</guid>
+		<description></description>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>Draft.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>22</wp:post_id>
+		<wp:post_date><![CDATA[2026-03-14 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2026-03-14 09:00:00]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[open]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[]]></wp:post_name>
+		<wp:status><![CDATA[draft]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[post]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+	</item>
+	<item>
+		<title>Auto Draft</title>
+		<link>https://woods.example.com/?p=24</link>
+		<pubDate>Sat, 14 Mar 2026 09:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[ranger-jo]]></dc:creator>
+		<guid isPermaLink="false">https://woods.example.com/?p=24</guid>
+		<description></description>
+		<content:encoded><![CDATA[]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>24</wp:post_id>
+		<wp:post_date><![CDATA[2026-03-14 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2026-03-14 09:00:00]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[open]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[]]></wp:post_name>
+		<wp:status><![CDATA[auto-draft]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[post]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+	</item>
+	<item>
+		<title>Spring Bloom Report</title>
+		<link>https://woods.example.com/?p=23</link>
+		<pubDate>Sat, 14 Mar 2026 09:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[ranger-jo]]></dc:creator>
+		<guid isPermaLink="false">https://woods.example.com/?p=23</guid>
+		<description></description>
+		<content:encoded><![CDATA[<p>Old.</p>]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>23</wp:post_id>
+		<wp:post_date><![CDATA[2026-03-14 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2026-03-14 09:00:00]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[open]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[20-revision-v1]]></wp:post_name>
+		<wp:status><![CDATA[inherit]]></wp:status>
+		<wp:post_parent>20</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[revision]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+	</item>
+	<item>
+		<title></title>
+		<link>https://woods.example.com/?p=30</link>
+		<pubDate>Sat, 14 Mar 2026 09:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[ranger-jo]]></dc:creator>
+		<guid isPermaLink="false">https://woods.example.com/?p=30</guid>
+		<description></description>
+		<content:encoded><![CDATA[]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>30</wp:post_id>
+		<wp:post_date><![CDATA[2026-03-14 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2026-03-14 09:00:00]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[open]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[30]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[nav_menu_item]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+		<wp:postmeta>
+			<wp:meta_key><![CDATA[_menu_item_object_id]]></wp:meta_key>
+			<wp:meta_value><![CDATA[2]]></wp:meta_value>
+		</wp:postmeta>
+		<wp:postmeta>
+			<wp:meta_key><![CDATA[_menu_item_type]]></wp:meta_key>
+			<wp:meta_value><![CDATA[post_type]]></wp:meta_value>
+		</wp:postmeta>
+	</item>
+	<item>
+		<title>Opening hours</title>
+		<link>https://woods.example.com/?p=40</link>
+		<pubDate>Sat, 14 Mar 2026 09:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[ranger-jo]]></dc:creator>
+		<guid isPermaLink="false">https://woods.example.com/?p=40</guid>
+		<description></description>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>Gates open at <strong>dawn</strong>.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>40</wp:post_id>
+		<wp:post_date><![CDATA[2026-03-14 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2026-03-14 09:00:00]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[open]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[opening-hours]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[wp_block]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+	</item>
+	<item>
+		<title>Creek Loop Trail</title>
+		<link>https://woods.example.com/trails/creek-loop/</link>
+		<pubDate>Sat, 14 Mar 2026 09:00:00 +0000</pubDate>
+		<dc:creator><![CDATA[ranger-jo]]></dc:creator>
+		<guid isPermaLink="false">https://woods.example.com/?p=50</guid>
+		<description></description>
+		<content:encoded><![CDATA[<!-- wp:paragraph -->
+<p>Two miles, mostly flat.</p>
+<!-- /wp:paragraph -->]]></content:encoded>
+		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
+		<wp:post_id>50</wp:post_id>
+		<wp:post_date><![CDATA[2026-03-14 09:00:00]]></wp:post_date>
+		<wp:post_date_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_date_gmt>
+		<wp:post_modified><![CDATA[2026-03-14 09:00:00]]></wp:post_modified>
+		<wp:post_modified_gmt><![CDATA[2026-03-14 09:00:00]]></wp:post_modified_gmt>
+		<wp:comment_status><![CDATA[open]]></wp:comment_status>
+		<wp:ping_status><![CDATA[closed]]></wp:ping_status>
+		<wp:post_name><![CDATA[creek-loop]]></wp:post_name>
+		<wp:status><![CDATA[publish]]></wp:status>
+		<wp:post_parent>0</wp:post_parent>
+		<wp:menu_order>0</wp:menu_order>
+		<wp:post_type><![CDATA[trail]]></wp:post_type>
+		<wp:post_password><![CDATA[]]></wp:post_password>
+		<wp:is_sticky>0</wp:is_sticky>
+		<category domain="trail" nicename="creek-loop"><![CDATA[Creek Loop]]></category>
+	</item>
+</channel>
+</rss>

@@ -45,6 +45,7 @@ toadshade = "toadshade.cli:main"
 apple-notes-to-toadshade = "toadshade.importers.apple_notes:main"
 drupal-to-toadshade = "toadshade.importers.drupal:main"
 backdrop-to-toadshade = "toadshade.importers.backdrop:main"
+wordpress-to-toadshade = "toadshade.importers.wordpress:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/toadshade"]

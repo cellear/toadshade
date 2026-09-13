@@ -155,6 +155,70 @@ def slugify(text: str, fallback: str = "note") -> str:
     return (slug or fallback)[:60].strip("-") or fallback
 
 
+class AliasPlacement:
+    """Where a page with a URL alias lands in the content tree.
+
+    Shared by exporters whose pages have real URLs (Drupal, Backdrop,
+    WordPress). The rules:
+
+    - A bundle is filed by its alias: `/about/team` goes to `about/team/`.
+    - Bundles never nest, so a page whose alias is also a parent of other
+      pages moves one level down: `/about` goes to `about/about/`.
+    - A one-level alias that is not a parent goes under its bundle's section
+      folder, if one is configured: `sections={"person": "people"}` files
+      `/matt-glaman` at `people/matt-glaman/`. Keys may be `bundle` or
+      `entity_type.bundle`.
+    - The front page, alias `/`, goes to `home/`.
+    - Aliases that slugify to the same place get `-2`, `-3`.
+
+    `paths` is every alias and system path that will hold a bundle, so that
+    parents are known before the first page is placed. It may be a callable,
+    evaluated on first use.
+    """
+
+    def __init__(self, paths, sections=None):
+        self._paths = paths
+        self.sections = dict(sections or {})
+        self._parents = None
+        self._placed: set = set()
+
+    def place(self, alias: str, entity_type: str = "", bundle: str = "") -> tuple:
+        """Alias to (directory, slug)."""
+        segments = [slugify(s, fallback="page") for s in alias.strip("/").split("/") if s]
+        is_parent = bool(segments) and tuple(segments) in self.parents()
+        if not segments:
+            segments = ["home"]
+        directory = segments if is_parent else segments[:-1]
+        if alias != "/" and len(segments) == 1 and not is_parent:
+            directory = self.section_for(entity_type, bundle) + directory
+        directory = "/".join(directory)
+
+        slug, n = segments[-1], 2
+        while (directory, slug) in self._placed:
+            slug = f"{segments[-1]}-{n}"
+            n += 1
+        self._placed.add((directory, slug))
+        return directory, slug
+
+    def parents(self) -> set:
+        """Every slugified path prefix that has pages beneath it."""
+        if self._parents is None:
+            paths = list(self._paths() if callable(self._paths) else self._paths)
+            # A section folder holds bundles, so it counts as a parent too.
+            paths += [f"/{folder}/0" for folder in self.sections.values()]
+            self._parents = set()
+            for path in paths:
+                segments = [slugify(s, fallback="page") for s in path.strip("/").split("/") if s]
+                for i in range(1, len(segments)):
+                    self._parents.add(tuple(segments[:i]))
+        return self._parents
+
+    def section_for(self, entity_type: str, bundle: str) -> list:
+        """The section folder for `node.session` or plain `session`, as parts."""
+        folder = self.sections.get(f"{entity_type}.{bundle}") or self.sections.get(bundle) or ""
+        return [slugify(part, fallback="section") for part in folder.split("/") if part]
+
+
 def format_value(value) -> list:
     """Render one prop value as Markdown lines.
 

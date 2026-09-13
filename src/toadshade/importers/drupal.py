@@ -40,7 +40,7 @@ from typing import Iterable, Iterator
 from urllib.parse import unquote, urlparse
 
 from .. import __version__
-from .base import BundleDraft, Exporter, markdown_for, slugify
+from .base import AliasPlacement, BundleDraft, Exporter, markdown_for, slugify
 
 # --------------------------------------------------------------------------
 # 1. PHP's serialize() format, which is how Drupal stores configuration
@@ -965,8 +965,7 @@ class DrupalToToadshade(Exporter):
         self.stop_after = stop_after
         #: {"session": "meetings"} or {"node.session": "meetings"}
         self.sections = dict(sections or {})
-        self._parents: set | None = None
-        self._placed: set = set()
+        self._placement = None
 
     # -- fetch ------------------------------------------------------------
 
@@ -1019,48 +1018,26 @@ class DrupalToToadshade(Exporter):
         return draft
 
     def place(self, alias: str, entity_type: str = "", bundle: str = "") -> tuple:
-        """Alias to (directory, slug).
+        """Alias to (directory, slug). The rules are `base.AliasPlacement`'s:
+        filed by alias, parents move one level down, `--sections` for flat
+        URLs, `-2` for collisions."""
+        return self.placement.place(alias, entity_type, bundle)
 
-        A page whose alias is also a parent of other pages moves one level
-        down, because bundles never nest. A page whose alias has no hierarchy
-        at all (`/matt-glaman`) goes under its bundle's section folder, if one
-        is configured (`--sections person=people`).
-        """
-        segments = [slugify(s, fallback="page") for s in alias.strip("/").split("/") if s]
-        is_parent = bool(segments) and tuple(segments) in self.parents()
-        if not segments:
-            segments = ["home"]
-        directory = segments if is_parent else segments[:-1]
-        if alias != "/" and len(segments) == 1 and not is_parent:
-            directory = self.section_for(entity_type, bundle) + directory
-        directory = "/".join(directory)
-
-        slug, n = segments[-1], 2
-        while (directory, slug) in self._placed:
-            slug = f"{segments[-1]}-{n}"
-            n += 1
-        self._placed.add((directory, slug))
-        return directory, slug
+    @property
+    def placement(self) -> AliasPlacement:
+        if self._placement is None:
+            def paths():
+                aliases = [a for by_lang in self.db.aliases().values() for a in by_lang.values()]
+                # System paths (/node/5) hold bundles too: /node/0, /user/0, ...
+                return aliases + [d["path"].format(id=0) for d in self.descriptors.values() if d["path"]]
+            self._placement = AliasPlacement(paths, self.sections)
+        return self._placement
 
     def parents(self) -> set:
-        """Every slugified path prefix that has pages beneath it."""
-        if self._parents is None:
-            paths = [a for by_lang in self.db.aliases().values() for a in by_lang.values()]
-            # System paths (/node/5) hold bundles too: /node/0, /user/0, ...
-            paths += [d["path"].format(id=0) for d in self.descriptors.values() if d["path"]]
-            # A section folder holds bundles, so it counts as a parent too.
-            paths += [f"/{folder}/0" for folder in self.sections.values()]
-            self._parents = set()
-            for path in paths:
-                segments = [slugify(s, fallback="page") for s in path.strip("/").split("/") if s]
-                for i in range(1, len(segments)):
-                    self._parents.add(tuple(segments[:i]))
-        return self._parents
+        return self.placement.parents()
 
     def section_for(self, entity_type: str, bundle: str) -> list:
-        """The section folder for `node.session` or plain `session`, as parts."""
-        folder = self.sections.get(f"{entity_type}.{bundle}") or self.sections.get(bundle) or ""
-        return [slugify(part, fallback="section") for part in folder.split("/") if part]
+        return self.placement.section_for(entity_type, bundle)
 
     # -- files ------------------------------------------------------------
 
