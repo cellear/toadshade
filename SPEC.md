@@ -249,15 +249,46 @@ double-clicking it, and sees the page's content.** Which means:
 - Images at a readable size — not constrained to a 180px thumbnail, which is
   the limitation that made the Markdown layer inadequate for review in the
   first place.
-- Component boundaries, types, and ids visible but subordinate — a reviewer is
-  reading the copy, not the structure, and the structure is there so they can
-  point at it.
+- Laid out like a web page: a title, images where they fall, formatted text,
+  a short list of details. A reviewer should recognize the page, not decode
+  a data dump.
+- Component boundaries, types, and ids one switch away. A **Show structure**
+  toggle (pure CSS, no script) outlines each component with its outline
+  number, type, and id. A reviewer reads the copy first, and the structure is
+  there when they need to point at "section 2.1".
 - It prints. Reviewers print things.
 
-The preview is deliberately *not* a rendering of the destination site's
-design. It is a proof sheet, not a mockup. Anything that makes it look like
-the finished page invites the reviewer to review the design instead of the
-content.
+The preview looks like *a* web page, not like *the* destination site. It uses
+a plain, generic layout rather than the site's theme. That's close enough for
+a reviewer to read the content in context — headings, images, links — without
+being invited to review the brand design. It also keeps the renderer free of
+any knowledge of the destination.
+
+### Rendering conventions
+
+The renderer reads a few prop names by convention and shows everything else
+as a details list:
+
+| Prop | Rendered as |
+|---|---|
+| `heading`, `title` | the component's heading, omitted when it repeats the page title |
+| `body`, `text`, `description` | prose, split into paragraphs on blank lines |
+| `body_html` | used instead of `body` when present, after sanitizing (see below) |
+| `format` | the text format of `body_html`; not displayed |
+| image asset references | figures; other assets become download links |
+| ISO 8601 dates, `{value, end_value}` ranges | readable dates |
+| a URL prop whose name contains `video` | a link on the component's first image, shown with a play badge |
+
+Sanitizing `body_html`:
+- Tags come from a fixed allow-list of text markup. Everything else is
+  unwrapped to its text.
+- Only `href`, `src`, `alt`, and `title` attributes survive, plus table spans.
+- Scripts, styles, forms, embeds, and media players are dropped along with
+  their contents.
+- Links are kept as links, but only `http`, `https`, `mailto`, and relative
+  URLs.
+- An image survives only if it points into the bundle's own `assets/`.
+  Nothing is ever *loaded* from outside the bundle.
 
 ---
 

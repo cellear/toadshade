@@ -202,3 +202,44 @@ def test_render_gives_checklists_checkboxes(tmp_path):
         {"id": "a", "type": "checklist", "props": {"items": ["water"]}},
     ])
     assert 'class="box"' in render_html(data)
+
+
+def test_render_sanitizes_body_html():
+    data = dict(BASE, components=[{"id": "a", "type": "text", "props": {
+        "body": "fallback text", "format": "full_html",
+        "body_html": (
+            '<p class="x" onclick="bad()">Hi <a href="javascript:alert(1)">no</a> '
+            '<a href="/ok" target="_blank">ok</a></p><script>bad()</script>'
+            '<form><input name="e"><button>Go</button></form>'
+            '<img src="https://tracker.example/x.png"><img src="assets/a.png" alt="A">'
+        ),
+    }}])
+    body = render_html(data).split("<main>")[1]  # the page chrome has its own <input>
+    assert "<p>Hi" in body and 'href="/ok"' in body and 'src="assets/a.png"' in body
+    for gone in ("bad()", "javascript:", "<form", "<input", "tracker.example",
+                 "onclick", "target=", "fallback text", "full_html"):
+        assert gone not in body, gone
+
+
+def test_render_hides_structure_behind_a_css_switch():
+    html = render_html(Bundle.load(EXAMPLE).data)
+    assert 'id="structure"' in html and '<label for="structure">' in html
+    assert 'class="meta"' in html, "numbers, types and ids are still there to point at"
+    assert "<script" not in html
+
+
+def test_render_formats_dates_and_ranges():
+    data = dict(BASE, components=[{"id": "a", "type": "x", "props": {
+        "when": {"value": "2026-02-20T02:00:00+00:00", "end_value": "2026-02-20T03:00:00+00:00"},
+        "posted": "2026-03-14",
+    }}])
+    html = render_html(data)
+    assert "Feb 20, 2026, 2:00 AM – 3:00 AM UTC" in html
+    assert "Mar 14, 2026" in html
+
+
+def test_render_does_not_repeat_the_page_title():
+    data = dict(BASE, components=[{"id": "a", "type": "x", "props": {"title": "Page"}, "slots": {
+        "photo": [{"id": "b", "type": "media", "props": {"title": "Page"}}],
+    }}])
+    assert render_html(data).count(">Page</h") == 1, "not at the top, not in a slot"

@@ -5,110 +5,123 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trail Guide — Toadshade preview</title>
 <style>
-:root { color-scheme: light; }
+:root { color-scheme: light; --ink: #1d2327; --muted: #646970; --line: #e2e4e7;
+  --accent: #2c5f2d; --wash: #f6f7f7; }
 * { box-sizing: border-box; }
-body {
-  margin: 0 auto; padding: 2.5rem 1.5rem 6rem; max-width: 48rem;
-  font: 16px/1.6 Georgia, 'Times New Roman', serif;
-  color: #1f2420; background: #fbfbf9;
-}
-header.page { border-bottom: 2px solid #2c5f2d; padding-bottom: 1.25rem; margin-bottom: 2rem; }
-header.page h1 { font-size: 2rem; margin: 0 0 .35rem; color: #1f4620; }
-header.page .alias { font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
-  font-size: .85rem; color: #5a6b58; margin: 0; }
-header.page .note { font-size: .8rem; color: #7c8a7a; margin: .75rem 0 0; font-style: italic; }
+body { margin: 0; font: 17px/1.65 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--ink); background: #fff; }
 
-.component { margin: 0 0 2rem; }
-.component.depth-1, .component.depth-2, .component.depth-3 { margin-bottom: 1.25rem; }
+.structure-toggle { position: absolute; opacity: 0; pointer-events: none; }
+.topbar { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap;
+  padding: .45rem 1.25rem; background: var(--wash); border-bottom: 1px solid var(--line);
+  font-size: .78rem; color: var(--muted); }
+.topbar .brand { font-weight: 600; color: var(--accent); }
+.topbar .alias { font-family: ui-monospace, Menlo, monospace; }
+.topbar label { margin-left: auto; cursor: pointer; user-select: none;
+  border: 1px solid #c3c4c7; border-radius: 999px; padding: .1rem .7rem; background: #fff; }
+.topbar label::before { content: "○ "; }
+.structure-toggle:checked + .topbar label { background: var(--accent); color: #fff; border-color: var(--accent); }
+.structure-toggle:checked + .topbar label::before { content: "● "; }
+.structure-toggle:focus-visible + .topbar label { outline: 2px solid var(--accent); }
 
-.meta { margin: 0 0 .4rem; font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
-  font-size: .72rem; color: #7c8a7a; display: flex; gap: .5rem; align-items: baseline;
-  flex-wrap: wrap; }
-.meta .num { font-weight: 700; color: #2c5f2d; }
-.meta code { background: #eef2ea; padding: .05rem .35rem; border-radius: 3px; color: #4a5a48; }
-.meta .label { font-style: italic; }
+main { max-width: 46rem; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+header.page h1 { font-size: 2.4rem; line-height: 1.15; margin: 0 0 1.5rem; letter-spacing: -.01em; }
+h2, h3, h4, h5, h6 { line-height: 1.25; margin: 1.6rem 0 .6rem; }
+h2 { font-size: 1.6rem; } h3 { font-size: 1.3rem; } h4, h5, h6 { font-size: 1.1rem; }
 
-h2, h3, h4, h5, h6 { color: #1f4620; line-height: 1.25; margin: .1rem 0 .6rem; }
-h2 { font-size: 1.5rem; }
-h3 { font-size: 1.2rem; }
-h4, h5, h6 { font-size: 1.05rem; }
-p { margin: 0 0 .8rem; }
+.component { margin: 0 0 1.25rem; }
+.prose p { margin: 0 0 1rem; }
+.prose a, .details a { color: var(--accent); }
+.prose ul, .prose ol { padding-left: 1.4rem; margin: 0 0 1rem; }
+.prose blockquote { margin: 1rem 0; padding: .1rem 1rem; border-left: 3px solid var(--line); color: var(--muted); }
+.prose pre { background: var(--wash); padding: .8rem 1rem; overflow-x: auto; font-size: .85rem; border-radius: 6px; }
+.prose code { font-size: .88em; }
+.prose table { border-collapse: collapse; margin: 1rem 0; }
+.prose th, .prose td { border: 1px solid var(--line); padding: .3rem .6rem; }
 
-figure { margin: 1rem 0; }
-/* Big enough to judge the image, capped so a proof sheet stays scannable —
-   this is the limitation that made a 180px Markdown thumbnail inadequate. */
-figure img { max-width: 100%; max-height: 22rem; width: auto; height: auto;
-  display: block; border: 1px solid #dce1d8; }
-.slot figure img { max-height: 14rem; }
-figcaption { font-size: .8rem; color: #6b7a69; margin-top: .35rem; font-style: italic; }
-p.file a { font-family: ui-monospace, Menlo, monospace; font-size: .85rem; }
+figure { margin: 1.25rem 0; }
+figure img { display: block; max-width: 100%; height: auto; border-radius: 6px; }
+.slot figure img { max-height: 24rem; width: auto; }
+figcaption { font-size: .85rem; color: var(--muted); margin-top: .4rem; }
+a.video { position: relative; display: block; width: fit-content; max-width: 100%; }
+a.video .play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 4rem; height: 4rem; border-radius: 50%; background: rgba(0,0,0,.65); color: #fff;
+  display: grid; place-items: center; font-size: 1.6rem; padding-left: .25rem; }
+a.file::before { content: "⬇ "; }
 
-dl { margin: .75rem 0; display: grid; grid-template-columns: minmax(6rem, 10rem) 1fr;
-  gap: .3rem .9rem; font-size: .88rem; border-left: 2px solid #e3e8df; padding-left: .9rem; }
-dt { font-family: ui-monospace, Menlo, monospace; font-size: .78rem; color: #6b7a69; }
-dd { margin: 0; }
-dd code { font-size: .78rem; word-break: break-all; }
+.details { display: grid; grid-template-columns: max-content 1fr; gap: .25rem 1rem;
+  margin: 1rem 0; padding: .75rem 1rem; background: var(--wash); border-radius: 6px; font-size: .9rem; }
+.details dt { color: var(--muted); }
+.details dd { margin: 0; }
+.details code { font-size: .8rem; word-break: break-all; }
 ul.items { margin: 0; padding-left: 1.1rem; }
-ul.items li { margin: 0 0 .2rem; }
 .box { display: inline-block; width: .72em; height: .72em; margin-right: .45em;
-  border: 1.5px solid #8a9788; border-radius: 2px; vertical-align: baseline; }
+  border: 1.5px solid #8c8f94; border-radius: 2px; }
 
-.slot { margin: .75rem 0 .75rem 1.25rem; border-left: 2px dotted #c6d0c1; padding-left: 1.25rem; }
-.slot-name { margin: 0 0 .5rem; font-family: ui-monospace, Menlo, monospace;
-  font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; color: #97a894; }
+/* Structure: hidden until the reader asks for it. */
+.meta, .slot-name { display: none; }
+.structure-toggle:checked ~ main .meta { display: flex; gap: .45rem; align-items: baseline;
+  flex-wrap: wrap; margin: 0 0 .3rem; font: .72rem/1.4 ui-monospace, Menlo, monospace; color: var(--muted); }
+.structure-toggle:checked ~ main .meta .num { font-weight: 700; color: var(--accent); }
+.structure-toggle:checked ~ main .meta code { background: #edf2ea; padding: 0 .3rem; border-radius: 3px; }
+.structure-toggle:checked ~ main .component { outline: 1px dashed #b8c4b3; outline-offset: .5rem; margin-bottom: 2rem; }
+.structure-toggle:checked ~ main .slot { margin-left: 1rem; }
+.structure-toggle:checked ~ main .slot-name { display: block; margin: 0 0 .5rem;
+  font: .68rem ui-monospace, Menlo, monospace; letter-spacing: .06em; text-transform: uppercase; color: #8c8f94; }
 
-footer.page { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #dce1d8;
-  font-size: .75rem; color: #8a9788; }
+footer.page { max-width: 46rem; margin: 0 auto; padding: 1rem 1.25rem 3rem;
+  border-top: 1px solid var(--line); font-size: .75rem; color: var(--muted); }
 
 @media print {
-  body { background: #fff; padding: 0; max-width: none; font-size: 11pt; }
+  .topbar { display: none; }
+  main { padding-top: 0; }
   .component { page-break-inside: avoid; }
-  .meta { color: #999; }
 }
 </style>
 </head>
 <body>
-<header class="page">
-  <h1>Trail Guide</h1>
-  <p class="alias">/visit/trail-guide</p>
-  <p class="note">Content proof sheet — not a design mockup. Generated from trail-guide.json; edits belong in the bundle, not here.</p>
-</header>
+<input type="checkbox" id="structure" class="structure-toggle">
+<div class="topbar">
+  <span class="brand">Toadshade preview</span>
+  <code class="alias">/visit/trail-guide</code>
+  <label for="structure">Show structure</label>
+</div>
+<main>
+<header class="page"><h1>Trail Guide</h1></header>
 <section class="component depth-0">
 <p class="meta"><span class="num">1</span><code class="type">hero</code><code class="id">s1</code><span class="label">Banner</span></p>
-<h2>Trail Guide</h2>
-<p>Eleven miles of marked trail through the creek bottom and up onto the ridge. Open dawn to dusk, year round, no entry fee.</p>
-<figure><img src="assets/trailhead.jpg" alt="A gravel trailhead with a wooden signpost at the edge of the woods"><figcaption>A gravel trailhead with a wooden signpost at the edge of the woods</figcaption></figure>
-<dl><dt>cta_label</dt><dd>Download the trail map</dd><dt>cta_url</dt><dd>/visit/maps</dd></dl>
+<figure><img src="assets/trailhead.jpg" alt="A boardwalk junction in winter woods, with a carved wooden signpost pointing toward the campground, visitor center, and trail"></figure>
+<div class="prose"><p>Eleven miles of marked trail through the creek bottom and up onto the ridge. Open dawn to dusk, year round, no entry fee.</p></div>
+<dl class="details"><dt>Cta label</dt><dd>Download the trail map</dd><dt>Cta url</dt><dd>/visit/maps</dd></dl>
 </section>
 <section class="component depth-0">
 <p class="meta"><span class="num">2</span><code class="type">section</code><code class="id">s2</code><span class="label">Pick a trail</span></p>
 <h2>Pick a trail</h2>
-<p>All three loops start from the same parking area and are blazed in different colors. Trail conditions change fast after rain — the creek crossing on the Blue Loop is genuinely impassable in spring.</p>
-<p>If you have never been here before, start with the Boardwalk Loop.</p>
-<dl><dt>background</dt><dd>light</dd></dl>
+<div class="prose"><p>All three loops start from the same parking area and are blazed in different colors. Trail conditions change fast after rain — the creek crossing on the Blue Loop is genuinely impassable in spring.</p><p>If you have never been here before, start with the Boardwalk Loop.</p></div>
+<dl class="details"><dt>Background</dt><dd>light</dd></dl>
 <div class="slot"><p class="slot-name">content</p>
 <section class="component depth-1">
 <p class="meta"><span class="num">2.1</span><code class="type">card-grid</code><code class="id">s2a</code></p>
-<dl><dt>columns</dt><dd>3</dd></dl>
+<dl class="details"><dt>Columns</dt><dd>3</dd></dl>
 <div class="slot"><p class="slot-name">cards</p>
 <section class="component depth-2">
 <p class="meta"><span class="num">2.1.1</span><code class="type">card</code><code class="id">s2a1</code></p>
 <h4>Boardwalk Loop</h4>
-<p>Half a mile, flat, fully accessible. Elevated boardwalk over the wetland, with benches at both ends.</p>
-<figure><img src="assets/boardwalk.jpg" alt="A wooden boardwalk curving through marsh grass"><figcaption>A wooden boardwalk curving through marsh grass</figcaption></figure>
-<dl><dt>url</dt><dd>/visit/trail-guide/boardwalk-loop</dd></dl>
+<figure><img src="assets/boardwalk.jpg" alt="A boardwalk curving away through green swamp forest, with a bench beside it"></figure>
+<div class="prose"><p>Half a mile, flat, fully accessible. Elevated boardwalk over the wetland, with benches at both ends.</p></div>
+<dl class="details"><dt>Url</dt><dd>/visit/trail-guide/boardwalk-loop</dd></dl>
 </section>
 <section class="component depth-2">
 <p class="meta"><span class="num">2.1.2</span><code class="type">card</code><code class="id">s2a2</code></p>
 <h4>Blue Loop</h4>
-<p>Three and a half miles along the creek. One unbridged crossing — check the water level before you start.</p>
-<dl><dt>url</dt><dd>/visit/trail-guide/blue-loop</dd></dl>
+<div class="prose"><p>Three and a half miles along the creek. One unbridged crossing — check the water level before you start.</p></div>
+<dl class="details"><dt>Url</dt><dd>/visit/trail-guide/blue-loop</dd></dl>
 </section>
 <section class="component depth-2">
 <p class="meta"><span class="num">2.1.3</span><code class="type">card</code><code class="id">s2a3</code></p>
 <h4>Ridge Trail</h4>
-<p>Seven miles out and back, with about nine hundred feet of climbing. The overlook is worth it in October.</p>
-<dl><dt>url</dt><dd>/visit/trail-guide/ridge-trail</dd></dl>
+<div class="prose"><p>Seven miles out and back, with about nine hundred feet of climbing. The overlook is worth it in October.</p></div>
+<dl class="details"><dt>Url</dt><dd>/visit/trail-guide/ridge-trail</dd></dl>
 </section>
 </div>
 </section>
@@ -117,14 +130,15 @@ footer.page { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #dce1d8
 <section class="component depth-0">
 <p class="meta"><span class="num">3</span><code class="type">callout</code><code class="id">s3</code></p>
 <h2>Before you go</h2>
-<p>There is no cell service past the first quarter mile. Tell somebody your route, carry water, and turn around with enough daylight to get back.</p>
-<dl><dt>phone</dt><dd>(555) 0100</dd><dt>email</dt><dd>trails@example.org</dd><dt>background</dt><dd>dark</dd></dl>
+<div class="prose"><p>There is no cell service past the first quarter mile. Tell somebody your route, carry water, and turn around with enough daylight to get back.</p></div>
+<dl class="details"><dt>Phone</dt><dd>(555) 0100</dd><dt>Email</dt><dd>trails@example.org</dd><dt>Background</dt><dd>dark</dd></dl>
 </section>
 <section class="component depth-0">
 <p class="meta"><span class="num">4</span><code class="type">download</code><code class="id">s4</code></p>
 <h2>Printable trail checklist</h2>
-<p class="file"><a href="assets/trail-checklist.txt">What to bring (plain text)</a></p>
+<dl class="details"><dt>File</dt><dd><a class="file" href="assets/trail-checklist.txt">What to bring (plain text)</a></dd></dl>
 </section>
-<footer class="page">Toadshade bundle <code>trail-guide</code> · 8 components</footer>
+</main>
+<footer class="page">Generated from trail-guide.json · bundle <code>trail-guide</code> · 8 components. A preview, not the live site: edits belong in the bundle.</footer>
 </body>
 </html>

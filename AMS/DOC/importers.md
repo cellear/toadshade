@@ -108,7 +108,8 @@ Not a changelog — none of these exist yet.
 | `notion-to-toadshade` | Notion export | Blocks map to components almost directly |
 | `figma-to-toadshade` | `.fig` file | Already prototyped; parses offline, no API |
 
-`apple-notes-to-toadshade` is absent from this list because it is built — see below.
+`apple-notes-to-toadshade` and `drupal-to-toadshade` are absent from this list
+because they are built — see below.
 
 The Figma one has a working ancestor: an offline `.fig` parser that walked
 75,000 nodes, pulled text overrides out of component instances, extracted
@@ -208,3 +209,103 @@ Nothing is uploaded. The exporter writes to the content root you name and
 makes no network calls. The tests in `tests/test_apple_notes.py` run against a
 synthetic fixture in `tests/fixtures/` — no real notes were read to build
 this.
+
+
+---
+
+## The second one: `drupal-to-toadshade`
+
+Shipped at `src/toadshade/importers/drupal.py`. It runs in the opposite
+direction from
+[Drupal-Canvas-Page-Migrate](https://github.com/cellear/Drupal-Canvas-Page-Migrate):
+it reads a Drupal 10/11 database and writes one bundle for each node,
+taxonomy term and user.
+
+### Reading the database directly
+
+The exporter reads the database rather than JSON:API, so a restored backup is
+enough and the site doesn't need to be running. `DrupalDatabase` is the fetch
+layer. It knows Drupal's SQL storage and nothing about Toadshade:
+
+- **Configuration** is the PHP-serialized `config` table:
+  - `field.storage.*` gives each field's type and cardinality
+  - `field.field.*` gives each field's label
+  - `core.entity_form_display.*` gives field order
+  - A small stdlib `php_unserialize()` reads these rows.
+- **Entities** come from `{type}_field_data`, restricted to
+  `default_langcode = 1`. That table already holds the default revision.
+- **Field values** come from the `{type}__{field}` tables. Deleted rows and
+  translation rows are ignored. Drupal's hashed name for tables over 48
+  characters is handled.
+- **URLs** come from `path_alias` (active aliases only). The front page is
+  read from `system.site`.
+- **Files** come from `file_managed`. Their `public://` URIs are resolved
+  against `--files-dir`.
+
+`ENTITY_TYPES` is a table of where each entity type keeps its rows. Supporting
+another fielded entity type means adding one entry there.
+
+### What an entity becomes
+
+| In Drupal | In the bundle |
+|---|---|
+| the entity | one top-level component typed `{entity_type}-{bundle}`, e.g. `node-article` |
+| label, scalar fields, content base columns | props on that component |
+| bookkeeping base columns (`uid`, `promote`, `sticky`, user account columns, term `weight`) | the bundle's `meta`: kept, but not shown as page content |
+| a media item's thumbnail | a `thumbnail` asset, unless it is the item's own image file |
+| formatted text (`text`, `text_long`, `text_with_summary`) | a `text` child in a slot named after the field: Markdown in `body`, the untouched HTML in `body_html`, plus `format` and `summary` |
+| image / file fields | `image` / `file` children with a `$asset` reference; a file missing from disk becomes an `image_url` / `file_url` string |
+| Paragraphs, media | embedded as `paragraph-{bundle}` / `media-{bundle}` children, recursively |
+| references to nodes, terms, users | the target's URL as a string prop, e.g. `field_tags: ["/tags/ferns"]` |
+| links | `title → url`, with `internal:` and `entity:` URIs resolved to aliases |
+| Smart Date | a dict prop with `value` / `end_value` as ISO 8601, plus `duration`, `rrule`, `timezone` when set |
+| inline `<img>` in body HTML | copied into `assets/` (image-style URLs map back to the original), repointed in the Markdown |
+
+The Markdown layer leaves out `body_html` and `format`, so reviewers never see
+raw tags. The HTML preview renders `body_html` as sanitized HTML (SPEC §5).
+
+Every column is exported, including user `mail`, `init` and the `pass` hash.
+Account columns go in `meta`. Filtering personal data is a separate decision,
+not the exporter's.
+
+### Where bundles land
+
+Bundles are filed by path alias. A page with no alias uses its system path
+(`node/5/`), and the front page becomes `home/`. Bundles never nest, so a
+page whose alias is also a parent moves one level down: `/about` is written
+to `about/about/`, next to `about/team/`. Aliases that slugify to the same
+name get `-2`, `-3`.
+
+Many Drupal sites have flat URLs: Pathauto's `/[node:title]` puts every node
+at the top level. `--sections session=meetings,person=people` files each
+one-level alias under its bundle's folder, e.g. `/matt-glaman` goes to
+`people/matt-glaman/`. Use `node.session=…` to name the entity type too. The
+JSON `alias` stays the real URL, and pages with a real hierarchy keep it.
+
+### Running it
+
+```bash
+pip install "toadshade[drupal]"      # PyMySQL, for MySQL/MariaDB
+drupal-to-toadshade content/ \
+    --db mysql://drupal@127.0.0.1:3306/drupal \
+    --files-dir ~/Sites/mysite/web/sites/default/files
+# password in the URL, or in DRUPAL_DB_PASSWORD
+
+# useful flags
+--entity-types node,taxonomy_term,user   --bundles article,page
+--sections session=meetings,person=people
+--prefix drupal_   --private-dir …   --stop-after 20   --no-render
+```
+
+A `sqlite:///site.db` URL needs no extra. The tests run that way, against
+`tests/fixtures/drupal10.sql`, a synthetic Drupal 10 database built by
+`tests/fixtures/make_drupal10.py`.
+
+### What it does not do (yet)
+
+- No revisions other than the default, and no translations.
+- No Canvas pages (`canvas_page` and its component tree). That's the backlog
+  item that would make a full round trip through Canvas possible.
+- No Drupal 7.
+
+Last updated: 2026-09-12 by claude

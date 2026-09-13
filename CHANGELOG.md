@@ -9,8 +9,10 @@ generalized into a format with no Drupal in it.
 - `schema/bundle.schema.json` — JSON Schema for the machine layer.
 - `toadshade validate` — structural checks with errors and warnings; optional
   JSON Schema validation when `jsonschema` is installed.
-- `toadshade render` — self-contained, double-clickable HTML proof sheet.
-  Standard library only.
+- `toadshade render` — self-contained, double-clickable HTML preview laid out
+  like a plain web page, with a CSS-only **Show structure** switch for
+  component numbers, types and ids. Sanitized `body_html`, readable dates.
+  Standard library only. (Began as a proof sheet; SPEC §5 amended.)
 - `toadshade list` / `toadshade new`.
 - `toadshade.importers.Exporter` — the `X-to-toadshade` contract.
 - **`apple-notes-to-toadshade`** — the first working exporter. A port of
@@ -18,6 +20,10 @@ generalized into a format with no Drupal in it.
   AppleScript driver unchanged and replaces only his one-line SQLite write
   with a bundle writer. Also reads his `--dump` JSONL from a file or stdin,
   so it works without importing anything.
+- **`drupal-to-toadshade`** — Drupal 10/11 nodes, terms and users, read
+  straight from the database (MySQL via the `drupal` extra, or SQLite).
+  Paragraphs and media embedded, files copied into `assets/`, bundles filed
+  by path alias, with `--sections` for sites whose URLs are flat.
 - Worked example bundle with nested slots, image and non-image assets.
 
 ### Fixed along the way

@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "toadshade"
 version = "0.1.0"
-description = "The page bundle format: one page, one directory — prose in Markdown, structure in JSON, a double-clickable HTML proof sheet."
+description = "The page bundle format: one page, one directory — prose in Markdown, structure in JSON, a double-clickable HTML preview."
 readme = "README.md"
 requires-python = ">=3.9"
 license = { file = "LICENSE" }
@@ -29,6 +29,8 @@ schema = ["jsonschema>=4.0"]
 # Live Apple Notes extraction reuses Simon Willison's AppleScript driver
 # rather than reimplementing it. Not needed to read a `--dump` file.
 apple-notes = ["apple-notes-to-sqlite>=0.1"]
+# Reading a Drupal site's MySQL/MariaDB database. A sqlite:/// URL needs nothing.
+drupal = ["PyMySQL>=1.0"]
 dev = ["jsonschema>=4.0", "pytest>=7.0"]
 
 [project.urls]
@@ -39,6 +41,7 @@ Specification = "https://github.com/cellear/toadshade/blob/main/SPEC.md"
 [project.scripts]
 toadshade = "toadshade.cli:main"
 apple-notes-to-toadshade = "toadshade.importers.apple_notes:main"
+drupal-to-toadshade = "toadshade.importers.drupal:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/toadshade"]

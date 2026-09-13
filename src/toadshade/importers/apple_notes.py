@@ -39,12 +39,11 @@ import datetime as _dt
 import json
 import re
 import sys
-import unicodedata
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Iterable, Iterator
 
-from .base import BundleDraft, Exporter
+from .base import BundleDraft, Exporter, slugify  # noqa: F401 - slugify re-exported
 
 # --------------------------------------------------------------------------
 # 1. Parsing a note's HTML body into components
@@ -299,19 +298,8 @@ def _image_asset(attrs: dict, assets: dict, stem: str):
 
 
 # --------------------------------------------------------------------------
-# 3. Slugs and dates
+# 3. Dates
 # --------------------------------------------------------------------------
-
-SLUG_STRIP = re.compile(r"[^a-z0-9]+")
-
-
-def slugify(text: str, fallback: str = "note") -> str:
-    normalized = unicodedata.normalize("NFKD", text or "")
-    ascii_only = normalized.encode("ascii", "ignore").decode("ascii").lower()
-    slug = SLUG_STRIP.sub("-", ascii_only).strip("-")
-    slug = re.sub(r"-{2,}", "-", slug)
-    return (slug or fallback)[:60].strip("-") or fallback
-
 
 def note_year(note: dict) -> str:
     """The note's creation year, or 'undated' when the date is unusable."""

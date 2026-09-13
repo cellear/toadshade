@@ -1,7 +1,7 @@
 # Toadshade
 
 **One page, one directory.** Prose in Markdown, structure in JSON, images
-alongside, and a double-clickable HTML proof sheet generated from the two.
+alongside, and a double-clickable HTML preview generated from the two.
 
 ```
 content/visit/trail-guide/
@@ -31,8 +31,8 @@ Toadshade stops trying to be one file. The prose lives in Markdown where a
 person can edit it. The structure lives in JSON where a schema can check it.
 And because "readable" in practice means *a non-technical reviewer can open the
 thing and see the page*, the format specifies a third file: a self-contained
-HTML proof sheet, generated, that opens from `file://` with its images at a
-size you can actually judge.
+HTML preview, generated, that opens from `file://` and reads like a web page,
+with its images at a size you can actually judge.
 
 That last file is the part most formats leave as somebody else's problem, and
 it is the one that decides whether the human layer survives contact with a
@@ -110,10 +110,12 @@ inside the bundle. That is the entire model — the full rules are in
 ## The HTML generator
 
 `src/toadshade/render.py` is the whole preview generator: one file, standard
-library only, about 200 lines including its CSS, and it reads top to bottom —
-load the JSON, walk the component tree emitting a `<section>` each, wrap it in
-a page with inlined styles, write the file. It is meant to be read and changed
-by whoever is using it. Run it on its own if you like:
+library only, a few hundred lines including its CSS, and it reads top to
+bottom — load the JSON, walk the component tree emitting a `<section>` each,
+wrap it in a page with inlined styles, write the file. The page looks like a
+plain web page; a **Show structure** switch reveals each component's number,
+type and id. It is meant to be read and changed by whoever is using it. Run it
+on its own if you like:
 
 ```bash
 python src/toadshade/render.py examples/trail-guide
@@ -142,7 +144,7 @@ It imports his `extract_notes()` — the AppleScript driver, the streaming
 reassembly, the mac_roman decoding — completely unchanged, and replaces the
 one line that wrote to SQLite. Your notes come out as a folder tree of pages,
 each with its lists, checklists and inline images intact, each with an HTML
-proof sheet you can double-click. Nothing is uploaded.
+preview you can double-click. Nothing is uploaded.
 
 **Out of Toadshade** — destination-side importers. The reference
 implementation is

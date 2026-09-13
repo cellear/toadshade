@@ -42,6 +42,8 @@ reusable, and the only design decision here worth copying.
 from __future__ import annotations
 
 import json
+import re
+import unicodedata
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Iterable, Iterator
@@ -140,6 +142,17 @@ class Exporter:
 
 
 # --------------------------------------------------------------------------
+
+SLUG_STRIP = re.compile(r"[^a-z0-9]+")
+
+
+def slugify(text: str, fallback: str = "note") -> str:
+    """Any text into a valid bundle slug (SPEC section 2), at most 60 chars."""
+    normalized = unicodedata.normalize("NFKD", text or "")
+    ascii_only = normalized.encode("ascii", "ignore").decode("ascii").lower()
+    slug = SLUG_STRIP.sub("-", ascii_only).strip("-")
+    slug = re.sub(r"-{2,}", "-", slug)
+    return (slug or fallback)[:60].strip("-") or fallback
 
 
 def format_value(value) -> list:
