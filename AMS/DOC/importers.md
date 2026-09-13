@@ -306,6 +306,107 @@ A `sqlite:///site.db` URL needs no extra. The tests run that way, against
 - No revisions other than the default, and no translations.
 - No Canvas pages (`canvas_page` and its component tree). That's the backlog
   item that would make a full round trip through Canvas possible.
-- No Drupal 7.
+- No Drupal 7. (Backdrop, below, is a Drupal 7 fork and shows most of what
+  a Drupal 7 reader would need.)
 
-Last updated: 2026-09-12 by claude
+
+---
+
+## The third one: `backdrop-to-toadshade`
+
+Shipped at `src/toadshade/importers/backdrop.py`. It reads a Backdrop CMS 1.x
+site and writes one bundle for each node, taxonomy term and user, exactly as
+`drupal-to-toadshade` does.
+
+### Same bundle layer, different fetch layer
+
+Backdrop forked Drupal 7, so its content storage is Drupal 7's, and its
+configuration is not in the database at all. The exporter is small because
+of one design choice: **`BackdropDatabase` yields the same record dicts as
+`DrupalDatabase.record()`**. The whole Drupal bundle layer (components, text,
+assets, inline images, Markdown, placement by alias, `--sections`) then runs
+unchanged.
+
+To make that possible, `drupal.py` got a minimal refactor, with no behaviour
+change and all Drupal tests still green:
+- `DrupalDatabase.descriptors` and `DrupalToToadshade.descriptors` hold the
+  per-entity-type table (previously the global `ENTITY_TYPES`).
+- `DrupalToToadshade.database_class`, `builder_class` and `source_prefix`
+  are class attributes that a subclass swaps.
+- `connect()` takes the pip extra and password variable to mention.
+- `parents()` derives the `/node/0`-style system paths from the descriptors.
+
+### Where Backdrop keeps things
+
+Checked against Backdrop's source (`hook_schema()` in
+`core/modules/*/*.install` and `field_sql_storage.module`, 1.35.x):
+
+| What | Backdrop | Read as |
+|---|---|---|
+| nodes | `node` (current `vid`, `title`, `tnid`…); no uuid column | base row |
+| field values | `field_data_{field}`: `entity_type`, `bundle`, `deleted`, `entity_id`, `revision_id`, `language`, `delta`, `{field}_{column}` | shared by all entity types, so filtered by `entity_type`; `deleted = 0`; `language` in (entity's, `und`) |
+| older revisions | `node_revision`, `field_revision_{field}` | never read |
+| terms | `taxonomy_term_data` (`vocabulary` is a machine name; `description` + `format` columns) | `description__value` / `__format`, so it becomes a text slot |
+| term parents | `taxonomy_term_hierarchy` | the Drupal 10 `parent` multi-field |
+| users | `users` (`picture` fid, `signature` + `signature_format`, serialized `data`) | picture asset, signature text slot, `data` decoded into meta |
+| roles | `users_roles` (`role` is a machine name) | the `roles` multi-field |
+| files | `file_managed` (`uri`, `timestamp`, `type`) | unchanged |
+| aliases | `url_alias` (`source`, `alias`, `langcode`), stored **without** leading slashes; newest `pid` wins | `/node/1` → `/about` |
+| field definitions | `field.field.{field}.json` (type, cardinality as a string, settings, `deleted`) | active config directory |
+| field instances | `field.instance.{entity}.{bundle}.{field}.json` (label, `widget.weight`, `deleted`) | order = widget weight |
+| front page | `system.core.json` → `site_frontpage`, a normal path like `node/1` | `home/` |
+
+Configuration normally lives in files (`$config_directories['active']` in
+`settings.php`, usually `files/config_<hash>/active`). A site that sets
+`config_active_class` to `ConfigDatabaseStorage` keeps the same JSON in a
+`config_active` table; the exporter reads that when `--config-dir` is
+omitted.
+
+Backdrop field types are renamed into the Drupal 10 shape in the fetch layer:
+`taxonomy_term_reference` and `entityreference` → `entity_reference`
+(`tid` → `target_id`), `link_field` → `link` (`url` → `uri`, `attributes` →
+`options`), `list_boolean` → `boolean`, image/file `fid` → `target_id`,
+`email` → `value`, date `value2` → `end_value`. The original type is kept as
+`storage_type`. Date values become ISO 8601 (`datestamp` from Unix time,
+`datetime` by replacing the space with `T`, without inventing a timezone).
+
+Translations: the translation module stores each translation as its own node
+with `tnid` pointing at the source. Those nodes are skipped (source language
+only, matching the Drupal exporter's scope); `tnid` is kept in `meta`.
+
+### Running it
+
+```bash
+pip install "toadshade[backdrop]"      # PyMySQL, for MySQL/MariaDB
+backdrop-to-toadshade content/ \
+    --db mysql://backdrop@127.0.0.1:3306/backdrop \
+    --config-dir ~/Sites/mysite/files/config_abc123/active \
+    --files-dir ~/Sites/mysite/files
+# password in the URL, or in BACKDROP_DB_PASSWORD
+
+# useful flags
+--entity-types node,taxonomy_term,user   --bundles post,page
+--sections post=blog,page=pages
+--prefix bd_   --private-dir …   --files-url /files   --stop-after 20   --no-render
+```
+
+Public file URLs are `/files/…` by default (`file_public_path` is `files`),
+and image-style derivatives `/files/styles/{style}/public/…` map back to the
+original file for inline images.
+
+The tests run against `tests/fixtures/backdrop1.sql`,
+`tests/fixtures/backdrop-config/` and `tests/fixtures/backdrop-files/`, all
+built by `tests/fixtures/make_backdrop1.py`.
+
+### What it does not do (yet)
+
+- **Layouts and Views are not read.** Backdrop's Layout module places blocks
+  and Views listings on paths; that is site building, not content. A page
+  whose only content is a layout (the standard profile's `home` path) has no
+  entity and produces no bundle.
+- No revisions other than the current one, and no translation nodes.
+- Contrib field types not listed above export as generic dict/scalar props.
+  Contrib Paragraphs for Backdrop is not embedded.
+- No comments.
+
+Last updated: 2026-09-13 by claude

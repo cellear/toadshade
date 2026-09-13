@@ -1,0 +1,22 @@
+{
+    "_config_name": "field.field.field_related",
+    "field_name": "field_related",
+    "type": "entityreference",
+    "module": "entityreference",
+    "active": 1,
+    "locked": 0,
+    "cardinality": "1",
+    "translatable": false,
+    "deleted": 0,
+    "entity_types": [],
+    "settings": {
+        "target_type": "node",
+        "handler": "base"
+    },
+    "storage": {
+        "type": "field_sql_storage",
+        "settings": [],
+        "module": "field_sql_storage",
+        "active": 1
+    }
+}

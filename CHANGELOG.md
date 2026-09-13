@@ -24,6 +24,12 @@ generalized into a format with no Drupal in it.
   straight from the database (MySQL via the `drupal` extra, or SQLite).
   Paragraphs and media embedded, files copied into `assets/`, bundles filed
   by path alias, with `--sections` for sites whose URLs are flat.
+- **`backdrop-to-toadshade`** — Backdrop CMS 1.x nodes, terms and users, from
+  the database plus the JSON config directory (`--config-dir`, or the
+  `config_active` table). MySQL via the `backdrop` extra, or SQLite. Its
+  fetch layer yields the Drupal exporter's record shape, so the whole Drupal
+  bundle layer is reused; `drupal.py` gained injectable descriptors,
+  database and builder classes (no behaviour change).
 - Worked example bundle with nested slots, image and non-image assets.
 
 ### Fixed along the way

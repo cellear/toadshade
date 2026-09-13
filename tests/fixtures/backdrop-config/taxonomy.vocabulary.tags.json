@@ -1,0 +1,8 @@
+{
+    "_config_name": "taxonomy.vocabulary.tags",
+    "name": "Tags",
+    "machine_name": "tags",
+    "description": "",
+    "hierarchy": 1,
+    "weight": 0
+}

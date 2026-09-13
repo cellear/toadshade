@@ -1,0 +1,28 @@
+{
+    "_config_name": "field.instance.node.post.field_link",
+    "field_name": "field_link",
+    "entity_type": "node",
+    "bundle": "post",
+    "label": "Related link",
+    "description": "",
+    "required": 0,
+    "deleted": 0,
+    "default_value": null,
+    "default_value_function": null,
+    "widget": {
+        "weight": "5",
+        "type": "default",
+        "active": 1,
+        "settings": {}
+    },
+    "settings": {
+        "user_register_form": false
+    },
+    "display": {
+        "default": {
+            "label": "above",
+            "type": "default",
+            "weight": 5
+        }
+    }
+}

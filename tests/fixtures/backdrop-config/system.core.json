@@ -1,0 +1,8 @@
+{
+    "_config_name": "system.core",
+    "site_name": "Toadshade Woods",
+    "site_mail": "woods@example.com",
+    "site_frontpage": "node/1",
+    "file_public_path": "files",
+    "language_default": "en"
+}

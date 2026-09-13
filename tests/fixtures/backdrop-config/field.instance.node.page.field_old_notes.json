@@ -1,0 +1,11 @@
+{
+    "_config_name": "field.instance.node.page.field_old_notes",
+    "field_name": "field_old_notes",
+    "entity_type": "node",
+    "bundle": "page",
+    "label": "Old notes",
+    "deleted": 1,
+    "widget": {
+        "weight": "0"
+    }
+}

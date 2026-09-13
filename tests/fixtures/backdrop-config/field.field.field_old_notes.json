@@ -1,0 +1,12 @@
+{
+    "_config_name": "field.field.field_old_notes",
+    "field_name": "field_old_notes",
+    "type": "text_long",
+    "module": "text",
+    "active": 1,
+    "locked": 0,
+    "cardinality": "1",
+    "deleted": 1,
+    "settings": {},
+    "storage": {}
+}

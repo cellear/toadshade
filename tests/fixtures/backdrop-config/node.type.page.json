@@ -1,0 +1,8 @@
+{
+    "_config_name": "node.type.page",
+    "type": "page",
+    "name": "Page",
+    "module": "node",
+    "description": "",
+    "title_label": "Title"
+}

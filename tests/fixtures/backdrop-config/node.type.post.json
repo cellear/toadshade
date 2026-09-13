@@ -1,0 +1,8 @@
+{
+    "_config_name": "node.type.post",
+    "type": "post",
+    "name": "Post",
+    "module": "node",
+    "description": "",
+    "title_label": "Title"
+}

@@ -322,9 +322,10 @@ def dedicated_table_name(entity_type: str, field_name: str, storage_uuid: str = 
     return name
 
 
-def connect(dsn: str):
+def connect(dsn: str, extra: str = "drupal", password_env: str = "DRUPAL_DB_PASSWORD"):
     """Open a DB-API connection from `mysql://user:pass@host:port/db` or
-    `sqlite:///path.db`. The MySQL password may come from DRUPAL_DB_PASSWORD."""
+    `sqlite:///path.db`. The MySQL password may come from `password_env`.
+    `extra` names the pip extra to suggest when PyMySQL is missing."""
     parsed = urlparse(dsn)
     if parsed.scheme == "sqlite":
         import sqlite3  # noqa: PLC0415
@@ -337,11 +338,11 @@ def connect(dsn: str):
         except ImportError as exc:  # pragma: no cover - environment-specific
             raise SystemExit(
                 "Reading MySQL/MariaDB needs PyMySQL:\n"
-                "    pip install 'toadshade[drupal]'"
+                f"    pip install 'toadshade[{extra}]'"
             ) from exc
         password = (
             unquote(parsed.password) if parsed.password is not None
-            else os.environ.get("DRUPAL_DB_PASSWORD", "")
+            else os.environ.get(password_env, "")
         )
         return pymysql.connect(
             host=parsed.hostname or "localhost",
@@ -371,6 +372,9 @@ class DrupalDatabase:
     """Read-only access to a Drupal 10/11 database. Yields plain dicts."""
 
     FIELD_ROW_COLUMNS = {"bundle", "deleted", "entity_id", "revision_id", "langcode", "delta"}
+    #: Where each entity type keeps its rows. A subclass reading another
+    #: storage (Backdrop's, say) swaps this table and the queries that use it.
+    descriptors = ENTITY_TYPES
 
     def __init__(self, connection, prefix: str = ""):
         self.connection = connection
@@ -512,7 +516,7 @@ class DrupalDatabase:
         """What a reference to a page-like entity points at: label and URL."""
         key = (entity_type, entity_id)
         if key not in self._references:
-            desc = ENTITY_TYPES.get(entity_type)
+            desc = self.descriptors.get(entity_type)
             if not desc or not desc["path"]:
                 self._references[key] = None
             else:
@@ -534,7 +538,7 @@ class DrupalDatabase:
     # -- entities ---------------------------------------------------------
 
     def _select(self, entity_type: str, where: str = "", params=()) -> list:
-        desc = ENTITY_TYPES[entity_type]
+        desc = self.descriptors[entity_type]
         return self.optional_query(
             f"SELECT d.*, b.uuid AS uuid FROM {self.table(desc['data'])} d "
             f"JOIN {self.table(desc['base'])} b ON b.{desc['id']} = d.{desc['id']} "
@@ -544,7 +548,7 @@ class DrupalDatabase:
 
     def fetch_entities(self, entity_type: str, bundles=None) -> Iterator[dict]:
         """Yield every entity of one type, default revision and language only."""
-        desc = ENTITY_TYPES[entity_type]
+        desc = self.descriptors[entity_type]
         for row in self._select(entity_type):
             if entity_type == "user" and not row["uid"]:
                 continue  # uid 0 is the anonymous user, not a person
@@ -554,11 +558,11 @@ class DrupalDatabase:
             yield self.record(entity_type, row)
 
     def load_entity(self, entity_type: str, entity_id, depth: int = 0):
-        rows = self._select(entity_type, f"AND d.{ENTITY_TYPES[entity_type]['id']} = %s", (entity_id,))
+        rows = self._select(entity_type, f"AND d.{self.descriptors[entity_type]['id']} = %s", (entity_id,))
         return self.record(entity_type, rows[0], depth) if rows else None
 
     def record(self, entity_type: str, row: dict, depth: int = 0) -> dict:
-        desc = ENTITY_TYPES[entity_type]
+        desc = self.descriptors[entity_type]
         entity_id = row[desc["id"]]
         bundle = row[desc["bundle"]] if desc["bundle"] else entity_type
         langcode = row.get("langcode")
@@ -627,9 +631,9 @@ class DrupalDatabase:
         if field_type in ("image", "file"):
             value["file"] = self.file(value.get("target_id"))
         elif field_type in ("entity_reference", "entity_reference_revisions"):
-            if target_type in EMBEDDED_TYPES and depth < MAX_DEPTH:
+            if target_type in EMBEDDED_TYPES and target_type in self.descriptors and depth < MAX_DEPTH:
                 value["entity"] = self.load_entity(target_type, value.get("target_id"), depth + 1)
-            elif target_type in ENTITY_TYPES:
+            elif target_type in self.descriptors:
                 value["target"] = self.reference(target_type, value.get("target_id"))
         elif field_type == "link":
             uri = value.get("uri") or ""
@@ -706,7 +710,7 @@ class _BundleBuilder:
     # -- components -------------------------------------------------------
 
     def component(self, record: dict) -> dict:
-        desc = ENTITY_TYPES[record["entity_type"]]
+        desc = self.exporter.descriptors[record["entity_type"]]
         component = {"id": self.next_id(), "type": f"{record['entity_type']}-{record['bundle']}"}
         props: dict = {}
         slots: dict = {}
@@ -934,6 +938,12 @@ class DrupalToToadshade(Exporter):
     """One node, term, or user, one bundle, filed by its path alias."""
 
     name = "drupal-to-toadshade"
+    #: The swappable pieces. `backdrop.py` replaces all four; the bundle
+    #: layer below reads the source only through them.
+    database_class = DrupalDatabase
+    builder_class = _BundleBuilder
+    descriptors = ENTITY_TYPES
+    source_prefix = "drupal"
 
     def __init__(
         self, source, content_root, files_dir=None, private_dir=None,
@@ -944,9 +954,9 @@ class DrupalToToadshade(Exporter):
         if isinstance(source, DrupalDatabase):
             self.db = source
         elif isinstance(source, str):
-            self.db = DrupalDatabase(connect(source), prefix)
+            self.db = self.database_class(connect(source), prefix)
         else:
-            self.db = DrupalDatabase(source, prefix)
+            self.db = self.database_class(source, prefix)
         self.files_dir = Path(files_dir) if files_dir else None
         self.private_dir = Path(private_dir) if private_dir else None
         self.files_url = files_url.rstrip("/") + "/"
@@ -972,7 +982,7 @@ class DrupalToToadshade(Exporter):
     # -- write ------------------------------------------------------------
 
     def to_bundle(self, record: dict) -> BundleDraft | None:
-        builder = _BundleBuilder(self)
+        builder = self.builder_class(self)
         component = builder.component(record)
 
         alias = page_url(record).replace(" ", "%20")
@@ -981,7 +991,7 @@ class DrupalToToadshade(Exporter):
         directory, slug = self.place(alias, record["entity_type"], record["bundle"])
 
         meta = {
-            "source": f"drupal:{record['entity_type']}/{record['id']}",
+            "source": f"{self.source_prefix}:{record['entity_type']}/{record['id']}",
             "generator": f"{self.name} {__version__}",
             "entity_type": record["entity_type"],
             "bundle": record["bundle"],
@@ -991,7 +1001,7 @@ class DrupalToToadshade(Exporter):
             "langcode": record["langcode"],
             "path": record["path"],
         }
-        for column in (*META_COLUMNS, *ENTITY_TYPES[record["entity_type"]].get("meta", ())):
+        for column in (*META_COLUMNS, *self.descriptors[record["entity_type"]].get("meta", ())):
             meta[column] = base_value(record, column)
         meta = {k: v for k, v in meta.items() if v is not None}
 
@@ -1036,7 +1046,8 @@ class DrupalToToadshade(Exporter):
         """Every slugified path prefix that has pages beneath it."""
         if self._parents is None:
             paths = [a for by_lang in self.db.aliases().values() for a in by_lang.values()]
-            paths += ["/node/0", "/taxonomy/term/0", "/user/0", "/media/0"]
+            # System paths (/node/5) hold bundles too: /node/0, /user/0, ...
+            paths += [d["path"].format(id=0) for d in self.descriptors.values() if d["path"]]
             # A section folder holds bundles, so it counts as a parent too.
             paths += [f"/{folder}/0" for folder in self.sections.values()]
             self._parents = set()

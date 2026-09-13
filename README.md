@@ -146,6 +146,15 @@ one line that wrote to SQLite. Your notes come out as a folder tree of pages,
 each with its lists, checklists and inline images intact, each with an HTML
 preview you can double-click. Nothing is uploaded.
 
+`backdrop-to-toadshade` reads a Backdrop CMS 1.x site (database plus its JSON
+config directory) and reuses the Drupal exporter's whole bundle layer:
+
+```bash
+pip install "toadshade[backdrop]"
+backdrop-to-toadshade content/ --db mysql://user@host/db \
+    --config-dir files/config_<hash>/active --files-dir files
+```
+
 **Out of Toadshade** — destination-side importers. The reference
 implementation is
 [Drupal-Canvas-Page-Migrate](https://github.com/cellear/Drupal-Canvas-Page-Migrate):

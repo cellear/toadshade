@@ -1,0 +1,28 @@
+{
+    "_config_name": "field.instance.node.post.field_attachment",
+    "field_name": "field_attachment",
+    "entity_type": "node",
+    "bundle": "post",
+    "label": "Trail map",
+    "description": "",
+    "required": 0,
+    "deleted": 0,
+    "default_value": null,
+    "default_value_function": null,
+    "widget": {
+        "weight": "4",
+        "type": "default",
+        "active": 1,
+        "settings": {}
+    },
+    "settings": {
+        "user_register_form": false
+    },
+    "display": {
+        "default": {
+            "label": "above",
+            "type": "default",
+            "weight": 4
+        }
+    }
+}

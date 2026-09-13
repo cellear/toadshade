@@ -31,6 +31,8 @@ schema = ["jsonschema>=4.0"]
 apple-notes = ["apple-notes-to-sqlite>=0.1"]
 # Reading a Drupal site's MySQL/MariaDB database. A sqlite:/// URL needs nothing.
 drupal = ["PyMySQL>=1.0"]
+# Reading a Backdrop CMS site's MySQL/MariaDB database. A sqlite:/// URL needs nothing.
+backdrop = ["PyMySQL>=1.0"]
 dev = ["jsonschema>=4.0", "pytest>=7.0"]
 
 [project.urls]
@@ -42,6 +44,7 @@ Specification = "https://github.com/cellear/toadshade/blob/main/SPEC.md"
 toadshade = "toadshade.cli:main"
 apple-notes-to-toadshade = "toadshade.importers.apple_notes:main"
 drupal-to-toadshade = "toadshade.importers.drupal:main"
+backdrop-to-toadshade = "toadshade.importers.backdrop:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/toadshade"]
